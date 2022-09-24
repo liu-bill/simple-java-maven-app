@@ -24,6 +24,11 @@ pipeline {
                 }
             }
         }
+        stage('Sanity check') {
+            steps {
+                input "Ready to run the delivery script?"
+            }
+        }
         stage('Deliver') {
             steps {
                 sh './jenkins/scripts/deliver.sh'
@@ -33,7 +38,7 @@ pipeline {
     post {
         always {
             archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
-            junit 'target/*.xml'
+            // junit 'target/*.xml'
             echo 'One way or another, I have finished'
             deleteDir() /* clean up our workspace */
         }
